@@ -3,31 +3,18 @@
 // Contrôleur FRONTAL => Router
 // Toute les requêtes des utilisateurs passent par ce fichier
 
+use App\Entity\Livre;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
-//Chargement des variable d'environnement
 
+/**
+ * @var Doctrine\ORM\EntityManager $entityManager
+ */
 
-$dotEnv = \Dotenv\Dotenv::createImmutable(__DIR__.'/../');
-$dotEnv->load();  //charger les variables d'environnement de .env dans un tableau $_ENV
+$entityManager = require_once __DIR__.'/../config/bootstrap.php';
 
-
-
-
-//Configurer la connexions à la base de données
-
-
-
-
-
-//$dbConfig = require_once __DIR__.'/../config/database.php';
-
-$db = new PDO("mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}",$_ENV['DB_USER'],$_ENV['DB_PASSWORD']);
-
-
-
-
-
+$livreRepository = $entityManager->getRepository(Livre::class);
 
 // Mise en place du routing
 
@@ -43,11 +30,7 @@ switch ($route){
 
     case "livre-list" :
 
-        // $livreDao est une dépendance de LivreController
-        $livreDao = new \App\Dao\LivreDAO($db);
-
-        // Injecter la dépendance $livreDao dans l'objet LivreController
-        $livreControleur = new \App\Controllers\LivreController($livreDao);
+        $livreControleur = new \App\Controllers\LivreController($livreRepository);
 
         $livreControleur->list();
 
@@ -59,11 +42,7 @@ switch ($route){
 
         if ($id){
 
-            // $livreDao est une dépendance de LivreController
-            $livreDao = new \App\Dao\LivreDAO($db);
-
-            // Injecter la dépendance $livreDao dans l'objet LivreController
-            $livreControleur = new \App\Controllers\LivreController($livreDao);
+            $livreControleur = new \App\Controllers\LivreController($livreRepository);
 
             $livreControleur->details($id);
 
@@ -75,11 +54,7 @@ switch ($route){
 
     case "livre-add" :
 
-        // $livreDao est une dépendance de LivreController
-        $livreDao = new \App\Dao\LivreDAO($db);
-
-        // Injecter la dépendance $livreDao dans l'objet LivreController
-        $livreControleur = new \App\Controllers\LivreController($livreDao);
+        $livreControleur = new \App\Controllers\LivreController($livreRepository);
 
         $livreControleur->addLivre();
 
@@ -93,20 +68,6 @@ switch ($route){
 
 }
 
-
-
-
-
-
-//if ($route === "accueil") {
-    // Créer un objet AccueilController
-
- //   $accueilController = new \App\Controllers\AccueilController();
-//    $accueilController->Accueil();
-
-//}else{
-   // echo "Page non trouvée";
-//}
 
 
 

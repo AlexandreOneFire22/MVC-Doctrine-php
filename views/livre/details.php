@@ -15,7 +15,7 @@
 
     <li> Titre : <?= $livre->getTitre() ?></li>
     <li> Auteur : <?= $livre->getAuteur() ?></li>
-    <li> Nombre de pages : <?= $livre->getNbPages() ?></li>
+    <li> Nombre de pages : <?= $livre->getNbPage() ?></li>
 
 </ul>
 

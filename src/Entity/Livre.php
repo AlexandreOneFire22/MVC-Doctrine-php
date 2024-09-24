@@ -1,31 +1,27 @@
 <?php
 
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 
-//Cette classe représente une entité (table liée dans la base de données
-
+#[ORM\Entity]
+#[ORM\Table(name: "livre")]
 class Livre
 {
-
+    #[ORM\Id] // Clé primaire dans la table posts
+    #[ORM\Column(name: "id_livre", type: 'integer')]
+    #[ORM\GeneratedValue]
     private int $id;
+
+    #[ORM\Column(name: "titre_livre",type: "string",length: 100)]
     private string $titre;
+
+    #[ORM\Column(name: "nombre_page_livre",type: "integer")]
+    private int $nbPage;
+
+    #[ORM\Column(name: "auteur_livre",type: "string",length: 100)]
     private string $auteur;
-    private int $nbPages;
-
-    /**
-     * @param int $id
-     * @param string $titre
-     * @param string $auteur
-     * @param int $nbPages
-     */
-    public function __construct(int $id, string $titre, string $auteur, int $nbPages)
-    {
-        $this->id = $id;
-        $this->titre = $titre;
-        $this->auteur = $auteur;
-        $this->nbPages = $nbPages;
-    }
-
 
     /**
      * @return int
@@ -60,6 +56,22 @@ class Livre
     }
 
     /**
+     * @return int
+     */
+    public function getNbPage(): int
+    {
+        return $this->nbPage;
+    }
+
+    /**
+     * @param int $nbPage
+     */
+    public function setNbPage(int $nbPage): void
+    {
+        $this->nbPage = $nbPage;
+    }
+
+    /**
      * @return string
      */
     public function getAuteur(): string
@@ -74,24 +86,6 @@ class Livre
     {
         $this->auteur = $auteur;
     }
-
-    /**
-     * @return int
-     */
-    public function getNbPages(): int
-    {
-        return $this->nbPages;
-    }
-
-    /**
-     * @param int $nbPages
-     */
-    public function setNbPages(int $nbPages): void
-    {
-        $this->nbPages = $nbPages;
-    }
-
-
 
 
 }
