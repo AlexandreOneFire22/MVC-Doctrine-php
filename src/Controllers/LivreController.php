@@ -10,14 +10,15 @@ use Doctrine\ORM\EntityRepository;
 require_once __DIR__.'/../../vendor/autoload.php';
 
 
+
 class LivreController
 {
 
-    private EntityRepository $livreRepository;
+    private EntityManager $entityManager;
 
-    public function __construct(EntityRepository $livreRepository)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->livreRepository = $livreRepository;
+        $this->entityManager = $entityManager;
     }
 
 
@@ -25,7 +26,9 @@ class LivreController
 
     public function list(){
 
-        $livres = $this->livreRepository->findAll();
+        $repository = $this->entityManager->getRepository(Livre::class);
+
+        $livres = $repository->findAll();
 
         //Fait appel à la Vue afin de renvoyer la page
 
@@ -35,7 +38,9 @@ class LivreController
 
     public function details($id){
 
-        $livre = $this->livreRepository->find($id);
+        $repository = $this->entityManager->getRepository(Livre::class);
+
+        $livre = $repository->find($id);
 
         if ($livre){
 
@@ -58,7 +63,20 @@ class LivreController
 
         if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
-            $livres = $this->livreRepository;   // A FINIR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $livre = new Livre();
+
+            $livre->setTitre($_POST["titre"]);
+            $livre->setNbPage($_POST["nbPages"]);
+            $livre->setAuteur($_POST["auteur"]);
+
+
+
+            $this->entityManager->persist($livre); //persist n'exécute pas directement le insert
+
+//Valider le Insert
+
+            $this->entityManager->flush(); // flush Réalise le Insert
+
             require __DIR__."/../../views/accueil/accueil.php";
         }else{
             require __DIR__."/../../views/livre/addLivre.php";

@@ -5,7 +5,7 @@
 
 use App\Entity\Livre;
 
-require_once __DIR__.'/../vendor/autoload.php';
+//require_once __DIR__.'/../vendor/autoload.php';
 
 
 /**
@@ -14,7 +14,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $entityManager = require_once __DIR__.'/../config/bootstrap.php';
 
-$livreRepository = $entityManager->getRepository(Livre::class);
+
 
 // Mise en place du routing
 
@@ -30,7 +30,7 @@ switch ($route){
 
     case "livre-list" :
 
-        $livreControleur = new \App\Controllers\LivreController($livreRepository);
+        $livreControleur = new \App\Controllers\LivreController($entityManager);
 
         $livreControleur->list();
 
@@ -42,7 +42,7 @@ switch ($route){
 
         if ($id){
 
-            $livreControleur = new \App\Controllers\LivreController($livreRepository);
+            $livreControleur = new \App\Controllers\LivreController($entityManager);
 
             $livreControleur->details($id);
 
@@ -54,7 +54,7 @@ switch ($route){
 
     case "livre-add" :
 
-        $livreControleur = new \App\Controllers\LivreController($livreRepository);
+        $livreControleur = new \App\Controllers\LivreController($entityManager);
 
         $livreControleur->addLivre();
 
